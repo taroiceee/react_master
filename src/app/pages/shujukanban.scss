@@ -1,0 +1,11 @@
+.shujukanban{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100%;
+    width: 100%;
+    gap: 20px;
+}
+.box{
+    border: 2px solid gray;
+    min-height: 200px;
+}
