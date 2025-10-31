@@ -1,0 +1,43 @@
+{
+  "code": 0,
+  "message": "success",
+  "requestId": "202405201630001234567890123",
+  "timestamp": 1716232200000,
+  "data": {
+    "userInfo": {
+      "userId": "1000086123456",
+      "username": "che-marketing-zhang",
+      "realName": "张营销",
+      "mobile": "138****6789",
+      "email": "zhang.yingxiao****@che-platform.com",
+      "status": 1,
+      "role": {
+        "roleId": "20003",
+        "roleName": "汽车营销运营岗",
+        "roleDesc": "负责车型上架、营销活动配置、线索数据查看"
+      },
+      "permissions": [
+        "car:model:view",
+        "car:model:edit",
+        "marketing:active:create",
+        "marketing:active:audit",
+        "marketing:clue:view",
+        "system:user:view:ownDept"
+      ],
+      "dept": {
+        "deptId": "30005",
+        "deptName": "汽车营销中心-华东区域运营部",
+        "deptLevel": 3
+      },
+      "expireTime": "2025-05-20T23:59:59+08:00",
+      "lastLoginTime": "2024-05-19T14:23:45+08:00",
+      "createTime": "2023-01-15T09:30:00+08:00"
+    },
+    "requestParams": {
+      "page": 1,
+      "pageSize": 10,
+      "status": 1,
+      "deptId": "30005"
+    }
+  }
+}

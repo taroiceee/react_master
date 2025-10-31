@@ -1,78 +1,63 @@
-/*
- * @Author: thx wbtanhuax@szlanyou.com
- * @Date: 2025-10-24 20:11:09
- * @LastEditors: thx wbtanhuax@szlanyou.com
- * @LastEditTime: 2025-10-24 20:11:27
- * @FilePath: /react_master/src/api/ request.jsx
- * @Description: 
- * 
- * Copyright (c) 2025 by ${git_name_email}, All Rights Reserved. 
- */
-// src/api/request.js （文件路径示例：和 dashboard.js 在同一个 api 文件夹下）
-import axios from 'axios'; // 先安装 axios：npm install axios
-import { message } from 'antd'; // 引入 Ant Design 的提示组件，统一弹窗提示错误
+import axios from 'axios';
+import { message } from 'antd';
 
 // 1. 创建 axios 实例（配置全局默认项）
 const request = axios.create({
-  baseURL: '', // 开发环境：Mock 服务拦截请求，不用填；后续对接真实后端时，填真实接口域名（如 'https://api.xxx.com'）
-  timeout: 5000, // 超时时间：5秒没响应则报错
+  baseURL: '', // 开发环境下，mock 服务会拦截此路径，无需填域名
+  timeout: 5000,
   headers: {
-    'Content-Type': 'application/json', // 默认请求头：JSON 格式（后台接口常用）
+    'Content-Type': 'application/json',
   },
 });
 
-// 2. 请求拦截器（发请求前做的事）
+// 2. 请求拦截器（发请求前处理）
 request.interceptors.request.use(
   (config) => {
-    // 示例1：给所有请求加 Token（后台系统鉴权必备）
-    const token = localStorage.getItem('admin_token'); // 从本地存储取登录态
+    // 携带 Token（后台鉴权用，mock 环境可保留逻辑）
+    const token = localStorage.getItem('admin_token');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`; // 把 Token 放到请求头里
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
-    // 示例2：给 GET 请求加时间戳（避免浏览器缓存）
+    // GET 请求加时间戳，避免缓存
     if (config.method === 'get') {
       config.params = {
         ...config.params,
-        _t: Date.now(), // 追加一个时间戳参数
+        _t: Date.now(),
       };
     }
 
-    return config; // 必须返回修改后的 config，否则请求发不出去
+    return config;
   },
   (error) => {
-    // 请求还没发出去就报错了（比如网络错误）
     message.error('请求配置错误，请刷新页面重试');
-    return Promise.reject(error); // 把错误抛出去，让调用者能 catch 到
+    return Promise.reject(error);
   }
 );
 
-// 3. 响应拦截器（接收到后端响应后做的事）
+// 3. 响应拦截器（接收到响应后处理，适配 mock 数据的 code: 0 成功标识）
 request.interceptors.response.use(
   (response) => {
-    // 示例1：统一提取 data 字段（后端返回格式通常是 { code, message, data }，前端只需要 data）
     const res = response.data;
 
-    // 示例2：统一处理业务错误（比如 Token 过期、权限不足）
-    if (res.code !== 200) { // 假设后端约定 code=200 是成功
-      // 弹窗提示错误信息（用 Ant Design 的 message 组件，和你的项目风格统一）
+    // 匹配 mock 数据的成功标识（code: 0 表示成功，非0表示失败）
+    if (res.code !== 0) {
       message.error(res.message || '接口请求失败，请重试');
 
-      // 特殊场景：Token 过期，跳转登录页
+      // Token 过期处理（401 是常见的未授权码）
       if (res.code === 401) {
-        localStorage.removeItem('admin_token'); // 清除无效 Token
-        window.location.href = '/login'; // 跳转到登录页
+        localStorage.removeItem('admin_token');
+        window.location.href = '/login'; // 跳登录页
       }
 
-      // 把错误抛出去，让调用者能 catch 到（比如处理加载状态）
       return Promise.reject(new Error(res.message || 'Error'));
     }
 
-    // 成功：只返回 data 字段，简化前端使用（不用每次都写 res.data）
+    // 成功时返回 data 字段（简化调用）
     return res.data;
   },
   (error) => {
-    // 处理网络错误、超时等（非业务错误）
+    // 网络/超时错误处理
     const errorMsg = error.message.includes('timeout') 
       ? '请求超时，请检查网络' 
       : '网络错误，请稍后重试';
@@ -81,5 +66,22 @@ request.interceptors.response.use(
   }
 );
 
-// 4. 导出这个封装好的 axios 实例
+// 4. 用户信息查询接口（适配 mock 数据的查询需求）
+/**
+ * 查询用户信息（支持分页、关键词筛选等）
+ * @param {Object} params - 查询参数
+ * @param {number} params.page - 页码（默认1）
+ * @param {number} params.pageSize - 每页条数（默认10）
+ * @param {string} params.keyword - 搜索关键词（用户名/姓名）
+ * @param {number} params.status - 账号状态（1正常，2禁用...）
+ * @param {string} params.deptId - 部门ID（筛选指定部门用户）
+ * @returns {Promise} - 返回用户信息数据（同 mock 中的 data 结构）
+ */
+export const getUserInfo = (params = {}) => {
+  // 请求 mock 文件夹下的用户数据（路径根据你的实际存放位置调整）
+  // 假设 mock 数据路径为：mock/api/userInfo.json（开发环境下会被 mock 服务拦截）
+  return request.get('/mock/api/userInfo.json', { params });
+};
+
+// 5. 导出 axios 实例（如需扩展其他接口，可直接用 request 调用）
 export default request;

@@ -7,31 +7,38 @@ import Sidebar from './shared/Sidebar';
 import SettingsPanel from './shared/SettingsPanel';
 import Footer from './shared/Footer';
 import { withTranslation } from "react-i18next";
+import { ThemeProvider } from '../context/themeContext';
 
 class App extends Component {
-  state = {}
+  pageBodyWrapperRef = React.createRef();
+  state = {
+    isFullPageLayout: false
+  };
   componentDidMount() {
-    this.onRouteChanged();
+    setTimeout(() => this.onRouteChanged(), 0);
   }
-  render () {
-    let navbarComponent = !this.state.isFullPageLayout ? <Navbar/> : '';
-    let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar/> : '';
-    let SettingsPanelComponent = !this.state.isFullPageLayout ? <SettingsPanel/> : '';
-    let footerComponent = !this.state.isFullPageLayout ? <Footer/> : '';
+  render() {
+    console.log('App 组件开始渲染');
+    let navbarComponent = !this.state.isFullPageLayout ? <Navbar /> : '';
+    let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar /> : '';
+    let SettingsPanelComponent = !this.state.isFullPageLayout ? <SettingsPanel /> : '';
+    let footerComponent = !this.state.isFullPageLayout ? <Footer /> : '';
     return (
-      <div className="container-scroller">
-        { navbarComponent }
-        <div className="container-fluid page-body-wrapper">
-          { sidebarComponent }
-          <div className="main-panel">
-            <div className="content-wrapper">
-              <AppRoutes/>
-              { SettingsPanelComponent }
+      <ThemeProvider>
+        <div className="container-scroller">
+          {navbarComponent}
+          <div className="container-fluid page-body-wrapper" ref={this.pageBodyWrapperRef}>
+            {sidebarComponent}
+            <div className="main-panel">
+              <div className="content-wrapper">
+                <AppRoutes />
+                {SettingsPanelComponent}
+              </div>
+              {footerComponent}
             </div>
-            { footerComponent }
           </div>
         </div>
-      </div>
+      </ThemeProvider>
     );
   }
 
@@ -42,35 +49,30 @@ class App extends Component {
   }
 
   onRouteChanged() {
-    console.log("ROUTE CHANGED");
-    const { i18n } = this.props;
-    const body = document.querySelector('body');
-    if(this.props.location.pathname === '/layout/RtlLayout') {
-      body.classList.add('rtl');
-      i18n.changeLanguage('ar');
-    }
-    else {
-      body.classList.remove('rtl')
-      i18n.changeLanguage('en');
-    }
-    window.scrollTo(0, 0);
-    const fullPageLayoutRoutes = ['/user-pages/login-1', '/user-pages/register-1', '/user-pages/lockscreen', '/error-pages/error-404', '/error-pages/error-500', '/general-pages/landing-page'];
-    for ( let i = 0; i < fullPageLayoutRoutes.length; i++ ) {
+    // 3. 通过 Ref 获取元素（绝对不会是 null，因为 Ref 绑定在 render 的元素上）
+    console.log('当前路由：', this.props.location.pathname);
+    console.log('isFullPageLayout 状态：', this.state.isFullPageLayout);
+
+
+    const pageBodyWrapper = this.pageBodyWrapperRef.current;
+    if (!pageBodyWrapper) return; // 极端情况保险
+    const fullPageLayoutRoutes = [
+      '/user-pages/login-1',
+      '/user-pages/register-1',
+      '/user-pages/lockscreen'
+    ];
+    for (let i = 0; i < fullPageLayoutRoutes.length; i++) {
       if (this.props.location.pathname === fullPageLayoutRoutes[i]) {
-        this.setState({
-          isFullPageLayout: true
-        })
-        document.querySelector('.page-body-wrapper').classList.add('full-page-wrapper');
+        this.setState({ isFullPageLayout: true });
+        pageBodyWrapper.classList.add('full-page-wrapper'); // 安全操作
         break;
       } else {
-        this.setState({
-          isFullPageLayout: false
-        })
-        document.querySelector('.page-body-wrapper').classList.remove('full-page-wrapper');
+        this.setState({ isFullPageLayout: false });
+        pageBodyWrapper.classList.remove('full-page-wrapper'); // 安全操作
       }
     }
   }
 
 }
 
-export default withTranslation() (withRouter(App));
+export default withTranslation()(withRouter(App));

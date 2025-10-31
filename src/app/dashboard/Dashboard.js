@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { ProgressBar } from 'react-bootstrap';
-import {Bar, Doughnut} from 'react-chartjs-2';
+import { Bar, Doughnut } from 'react-chartjs-2';
 import DatePicker from "react-datepicker";
- 
+
 // import "react-datepicker/dist/react-datepicker.css";
 
 
@@ -13,7 +13,7 @@ export class Dashboard extends Component {
       startDate: date
     });
   };
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       startDate: new Date(),
@@ -23,7 +23,7 @@ export class Dashboard extends Component {
           yAxes: [{
             ticks: {
               beginAtZero: true,
-              display:false,
+              display: false,
               min: 0,
               stepSize: 20,
               max: 80
@@ -36,7 +36,7 @@ export class Dashboard extends Component {
           }],
           xAxes: [{
             gridLines: {
-              display:false,
+              display: false,
               drawBorder: false,
               color: 'rgba(0,0,0,1)',
               zeroLineColor: 'rgba(235,237,242,1)'
@@ -48,7 +48,7 @@ export class Dashboard extends Component {
             },
             categoryPercentage: 0.5,
             barPercentage: 0.5
-        }]
+          }]
         },
         legend: {
           display: false,
@@ -70,34 +70,34 @@ export class Dashboard extends Component {
       },
       todos: [
         {
-            id: 1,
-            task: 'Pick up kids from school',
-            isCompleted: false
+          id: 1,
+          task: 'Pick up kids from school',
+          isCompleted: false
         },
         {
-            id: 2,
-            task: 'Prepare for presentation',
-            isCompleted: true
+          id: 2,
+          task: 'Prepare for presentation',
+          isCompleted: true
         },
         {
-            id: 3,
-            task: 'Print Statements',
-            isCompleted: false
+          id: 3,
+          task: 'Print Statements',
+          isCompleted: false
         },
         {
-            id: 4,
-            task: 'Create invoice',
-            isCompleted: false
+          id: 4,
+          task: 'Create invoice',
+          isCompleted: false
         },
         {
-            id: 5,
-            task: 'Call John',
-            isCompleted: true
+          id: 5,
+          task: 'Call John',
+          isCompleted: true
         },
         {
-            id: 6,
-            task: 'Meeting with Alisa',
-            isCompleted: false
+          id: 6,
+          task: 'Meeting with Alisa',
+          isCompleted: false
         }
       ],
       inputValue: '',
@@ -110,50 +110,50 @@ export class Dashboard extends Component {
   statusChangedHandler(event, id) {
 
     //const todoIndex = this.state.todos.findIndex( t => t.id === id );
-    const todo = {...this.state.todos[id]};
+    const todo = { ...this.state.todos[id] };
     todo.isCompleted = event.target.checked;
 
     const todos = [...this.state.todos];
     todos[id] = todo;
 
     this.setState({
-        todos: todos
+      todos: todos
     })
   }
 
-  addTodo (event) {
-      event.preventDefault();
+  addTodo(event) {
+    event.preventDefault();
 
-      const todos = [...this.state.todos];
-      todos.unshift({
-          id: todos.length ? todos[todos.length - 1].id + 1 : 1,
-          task: this.state.inputValue,
-          isCompleted: false
-          
-      })
+    const todos = [...this.state.todos];
+    todos.unshift({
+      id: todos.length ? todos[todos.length - 1].id + 1 : 1,
+      task: this.state.inputValue,
+      isCompleted: false
 
-      this.setState({
-          todos: todos,
-          inputValue: ''
-      })
+    })
+
+    this.setState({
+      todos: todos,
+      inputValue: ''
+    })
   }
 
-  removeTodo (index) {
-      const todos = [...this.state.todos];
-      todos.splice(index, 1);
+  removeTodo(index) {
+    const todos = [...this.state.todos];
+    todos.splice(index, 1);
 
-      this.setState({
-          todos: todos
-      })
+    this.setState({
+      todos: todos
+    })
   }
 
   inputChangeHandler(event) {
-      this.setState({
-          inputValue: event.target.value
-      });
+    this.setState({
+      inputValue: event.target.value
+    });
   }
-  
-  componentDidMount(){
+
+  componentDidMount() {
     //your code
     var ctx = document.getElementById('visitSaleChart').getContext("2d")
     var gradientBar1 = ctx.createLinearGradient(0, 0, 0, 181)
@@ -223,28 +223,28 @@ export class Dashboard extends Component {
     const newTrafficData = {
       datasets: [{
         data: [30, 30, 40],
-          backgroundColor: [
-            gradientdonut1,
-            gradientdonut2,
-            gradientdonut3
-          ],
-          hoverBackgroundColor: [
-            gradientdonut1,
-            gradientdonut2,
-            gradientdonut3
-          ],
-          borderColor: [
-            gradientdonut1,
-            gradientdonut2,
-            gradientdonut3
-          ],
-          legendColor: [
-            gradientdonut1,
-            gradientdonut2,
-            gradientdonut3
-          ]
+        backgroundColor: [
+          gradientdonut1,
+          gradientdonut2,
+          gradientdonut3
+        ],
+        hoverBackgroundColor: [
+          gradientdonut1,
+          gradientdonut2,
+          gradientdonut3
+        ],
+        borderColor: [
+          gradientdonut1,
+          gradientdonut2,
+          gradientdonut3
+        ],
+        legendColor: [
+          gradientdonut1,
+          gradientdonut2,
+          gradientdonut3
+        ]
       }],
-  
+
       // These labels appear in the legend and in the tooltips when hovering different arcs
       labels: [
         'Search Engines',
@@ -252,7 +252,7 @@ export class Dashboard extends Component {
         'Bookmarks Click',
       ]
     };
-    this.setState({visitSaleData: newVisitSaleData, trafficData:newTrafficData} )
+    this.setState({ visitSaleData: newVisitSaleData, trafficData: newTrafficData })
   }
 
 
@@ -261,18 +261,9 @@ export class Dashboard extends Component {
     document.querySelector('.proBanner').classList.toggle("hide");
   }
 
-  render () {
+  render() {
     return (
       <div>
-        <div className="proBanner">
-          <div>
-            <span className="d-flex align-items-center purchase-popup">
-              <p>Get tons of UI components, Plugins, multiple layouts, 20+ sample pages, and more!</p>
-              <a href="https://www.bootstrapdash.com/product/purple-react/?utm_source=organic&utm_medium=banner&utm_campaign=free-preview" rel="noopener noreferrer" target="_blank" className="btn btn-sm purchase-button ml-auto">Check Pro Version</a>
-              <i className="mdi mdi-close bannerClose" onClick={this.toggleProBanner}></i>
-            </span>
-          </div>
-        </div>
         <div className="page-header">
           <h3 className="page-title">
             <span className="page-title-icon bg-gradient-primary text-white mr-2">
@@ -344,7 +335,7 @@ export class Dashboard extends Component {
                     </ul>
                   </div>
                 </div>
-                <Bar ref='chart' className="chartLegendContainer" data={this.state.visitSaleData} options={this.state.visitSaleOptions} id="visitSaleChart"/>
+                <Bar ref='chart' className="chartLegendContainer" data={this.state.visitSaleData} options={this.state.visitSaleOptions} id="visitSaleChart" />
               </div>
             </div>
           </div>
@@ -442,7 +433,7 @@ export class Dashboard extends Component {
             <div className="card">
               <div className="card-body p-0 d-flex">
                 <div className="dashboard-custom-date-picker">
-                  <DatePicker inline selected={this.state.startDate}  onChange={this.handleChange}/>
+                  <DatePicker inline selected={this.state.startDate} onChange={this.handleChange} />
                 </div>
               </div>
             </div>
@@ -468,7 +459,7 @@ export class Dashboard extends Component {
                   </div>
                   <div className="col-6 pl-1">
                     <img src={require("../../assets/images/dashboard/img_2.jpg")} className="mb-2 mw-100 w-100 rounded" alt="face" />
-                    <img src={require("../../assets/images/dashboard/img_3.jpg")} className="mw-100 w-100 rounded" alt="face "/>
+                    <img src={require("../../assets/images/dashboard/img_3.jpg")} className="mw-100 w-100 rounded" alt="face " />
                   </div>
                 </div>
                 <div className="d-flex mt-5 align-items-start">
@@ -506,7 +497,7 @@ export class Dashboard extends Component {
                         <td> Herman Beck </td>
                         <td> May 15, 2015 </td>
                         <td>
-                          <ProgressBar variant="gradient-success" now={25}/>
+                          <ProgressBar variant="gradient-success" now={25} />
                         </td>
                       </tr>
                       <tr>
@@ -514,7 +505,7 @@ export class Dashboard extends Component {
                         <td> Messsy Adam </td>
                         <td> Jul 01, 2015 </td>
                         <td>
-                        <ProgressBar variant="gradient-danger" now={75}/>
+                          <ProgressBar variant="gradient-danger" now={75} />
                         </td>
                       </tr>
                       <tr>
@@ -522,7 +513,7 @@ export class Dashboard extends Component {
                         <td> John Richards </td>
                         <td> Apr 12, 2015 </td>
                         <td>
-                        <ProgressBar variant="gradient-warning" now={90}/>
+                          <ProgressBar variant="gradient-warning" now={90} />
                         </td>
                       </tr>
                       <tr>
@@ -530,7 +521,7 @@ export class Dashboard extends Component {
                         <td> Peter Meggik </td>
                         <td> May 15, 2015 </td>
                         <td>
-                        <ProgressBar variant="gradient-primary" now={50}/>
+                          <ProgressBar variant="gradient-primary" now={50} />
                         </td>
                       </tr>
                       <tr>
@@ -538,7 +529,7 @@ export class Dashboard extends Component {
                         <td> Edward </td>
                         <td> May 03, 2015 </td>
                         <td>
-                        <ProgressBar variant="gradient-danger" now={50}/>
+                          <ProgressBar variant="gradient-danger" now={50} />
                         </td>
                       </tr>
                       <tr>
@@ -546,7 +537,7 @@ export class Dashboard extends Component {
                         <td> Ronald </td>
                         <td> Jun 05, 2015 </td>
                         <td>
-                        <ProgressBar variant="gradient-info" now={65}/>
+                          <ProgressBar variant="gradient-info" now={65} />
                         </td>
                       </tr>
                     </tbody>
@@ -559,50 +550,50 @@ export class Dashboard extends Component {
             <div className="card">
               <div className="card-body">
                 <h4 className="card-title text-white">Todo</h4>
-                <form  className="add-items d-flex" onSubmit={this.addTodo}>
-                  <input 
-                      type="text" 
-                      className="form-control h-auto" 
-                      placeholder="What do you need to do today?" 
-                      value={this.state.inputValue} 
-                      onChange={this.inputChangeHandler}
-                      required />
+                <form className="add-items d-flex" onSubmit={this.addTodo}>
+                  <input
+                    type="text"
+                    className="form-control h-auto"
+                    placeholder="What do you need to do today?"
+                    value={this.state.inputValue}
+                    onChange={this.inputChangeHandler}
+                    required />
                   <button type="submit" className="btn btn-gradient-primary font-weight-bold px-lg-4 px-3">Add</button>
                 </form>
                 <div className="list-wrapper">
-                    <ul className="d-flex flex-column todo-list">
-                        {this.state.todos.map((todo, index) =>{
-                            return <ListItem 
-                            isCompleted={todo.isCompleted}
-                            changed={(event) => this.statusChangedHandler(event, index)}
-                            key={todo.id}
-                            remove={() => this.removeTodo(index) }
-                            >{todo.task}</ListItem>
-                        })}
-                    </ul>
+                  <ul className="d-flex flex-column todo-list">
+                    {this.state.todos.map((todo, index) => {
+                      return <ListItem
+                        isCompleted={todo.isCompleted}
+                        changed={(event) => this.statusChangedHandler(event, index)}
+                        key={todo.id}
+                        remove={() => this.removeTodo(index)}
+                      >{todo.task}</ListItem>
+                    })}
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     );
   }
 }
 const ListItem = (props) => {
-    
+
   return (
-      <li className={(props.isCompleted ? 'completed' : null)}>
-          <div className="form-check">
-              <label htmlFor="" className="form-check-label"> 
-                  <input className="checkbox" type="checkbox" 
-                      checked={props.isCompleted} 
-                      onChange={props.changed} 
-                      /> {props.children} <i className="input-helper"></i>
-              </label>
-          </div>
-          <i className="remove mdi mdi-close-circle-outline" onClick={props.remove}></i>
-      </li>
+    <li className={(props.isCompleted ? 'completed' : null)}>
+      <div className="form-check">
+        <label htmlFor="" className="form-check-label">
+          <input className="checkbox" type="checkbox"
+            checked={props.isCompleted}
+            onChange={props.changed}
+          /> {props.children} <i className="input-helper"></i>
+        </label>
+      </div>
+      <i className="remove mdi mdi-close-circle-outline" onClick={props.remove}></i>
+    </li>
   )
 };
 export default Dashboard;

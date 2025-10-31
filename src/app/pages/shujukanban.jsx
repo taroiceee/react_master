@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Button } from 'antd';
 import './shujukanban.scss';
 import { Doughnut } from 'react-chartjs-2';
-import request from '../../api/request';
 
 
 const data = {
