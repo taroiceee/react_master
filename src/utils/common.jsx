@@ -1,3 +1,13 @@
+/*
+ * @Author: thx wbtanhuax@szlanyou.com
+ * @Date: 2025-11-02 22:56:53
+ * @LastEditors: thx wbtanhuax@szlanyou.com
+ * @LastEditTime: 2025-11-03 00:14:53
+ * @FilePath: /react_master/src/utils/common.jsx
+ * @Description: 
+ * 
+ * Copyright (c) 2025 by ${git_name_email}, All Rights Reserved. 
+ */
 //公共方法
 import { getUserInfo } from '../api/request'; // 引入封装的接口函数
 
@@ -8,6 +18,7 @@ import { getUserInfo } from '../api/request'; // 引入封装的接口函数
  */
 export const fetchUserInfo = async (params = {}) => {
   try {
+    console.log("fetchUserInfo开始调用接口")
     const data = await getUserInfo(params); // 调用接口
     console.log('查询用户数据成功：',data.userInfo)
     return data.userInfo; // 直接返回用户信息（简化后续使用）

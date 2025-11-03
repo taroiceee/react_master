@@ -1,7 +1,15 @@
+/*
+ * @Author: thx wbtanhuax@szlanyou.com
+ * @Date: 2025-11-02 22:56:53
+ * @LastEditors: thx wbtanhuax@szlanyou.com
+ * @LastEditTime: 2025-11-02 23:23:56
+ * @FilePath: /react_master/src/context/themeContext.jsx
+ * @Description: 
+ * 
+ * Copyright (c) 2025 by ${git_name_email}, All Rights Reserved. 
+ */
 // 主题初始设置/主题变更
-import React, { createContext, useState, useEffect } from 'react';
-// import { theme } from "antd";
-// import context from "react-bootstrap/esm/AccordionContext";
+import React, { createContext, useState, useEffect ,useContext} from 'react';
 
 export const ThemeContext = createContext({
     theme: 'light',
@@ -44,3 +52,14 @@ export const ThemeProvider = ({ children }) => {
     )
 };
 
+export const useTheme = () => {
+    const context = useContext(ThemeContext);
+    if (typeof context.changeTheme !== 'function') {
+        throw new Error('ThemeContext 中未找到有效的 toggleTheme 方法');
+    }
+    if (!context) {
+        throw new Error('useTheme必须在ThemeProvider包裹的组件中使用');
+    };
+
+    return context;
+}

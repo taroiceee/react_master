@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'; // 1. 导入函
 import { Link, useLocation } from 'react-router-dom'; // 2. 导入useLocation替代withRouter获取路由信息
 import { Collapse } from 'react-bootstrap';
 import { Trans } from 'react-i18next';
-import { useUser } from '../../AppInit'; // 引入获取用户数据的 Hook
+import { useUserInfo } from '../../context/userInfoContext'; // 引入获取用户数据的 Hook
 
 
 // 3. 类组件改写为函数组件
@@ -12,8 +12,7 @@ const Sidebar = () => {
 
   // 5. 用useLocation获取当前路由信息，替代this.props.location（无需再用withRouter包裹）
   const location = useLocation();
-  const userData = useUser();
-
+  const userData = useUserInfo();
   // 6. 重写toggleMenuState方法：类组件this.setState改为函数组件setMenuState（函数式更新确保依赖旧状态）
   const toggleMenuState = (menuStateKey) => {
     setMenuState(prevState => {
@@ -113,7 +112,6 @@ const Sidebar = () => {
       });
     };
   }, [location, onRouteChanged]); // 依赖项为location：路由变化时重新执行（对应componentDidUpdate）
-  console.log('Sidebar 开始渲染');
   // 11. 原render方法内容直接移至函数组件返回值，替换类组件语法
   return (
     <nav className="sidebar sidebar-offcanvas" id="sidebar">
@@ -125,8 +123,8 @@ const Sidebar = () => {
               <span className="login-status online"></span> {/* change to offline or busy as needed */}
             </div>
             <div className="nav-profile-text">
-              <span className="font-weight-bold mb-2"><Trans>{userData?.realName || 'Loading...'}</Trans></span>
-              <span className="text-secondary text-small"><Trans>{userData?.role.roleName || 'Loading...'}</Trans></span>
+              <span className="font-weight-bold mb-2"><Trans>{userData?.userInfo.realName || 'Loading...'}</Trans></span>
+              <span className="text-secondary text-small"><Trans>{userData?.userInfo.role.roleName || 'Loading...'}</Trans></span>
             </div>
             <i className="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
           </a>

@@ -1,3 +1,13 @@
+/*
+ * @Author: thx wbtanhuax@szlanyou.com
+ * @Date: 2025-11-02 22:56:53
+ * @LastEditors: thx wbtanhuax@szlanyou.com
+ * @LastEditTime: 2025-11-03 00:23:56
+ * @FilePath: /react_master/src/app/App.js
+ * @Description: 
+ * 
+ * Copyright (c) 2025 by ${git_name_email}, All Rights Reserved. 
+ */
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import './App.scss';
@@ -18,7 +28,6 @@ class App extends Component {
     setTimeout(() => this.onRouteChanged(), 0);
   }
   render() {
-    console.log('App 组件开始渲染');
     let navbarComponent = !this.state.isFullPageLayout ? <Navbar /> : '';
     let sidebarComponent = !this.state.isFullPageLayout ? <Sidebar /> : '';
     let SettingsPanelComponent = !this.state.isFullPageLayout ? <SettingsPanel /> : '';

@@ -406,10 +406,13 @@ $bullet-line-list-shape-bg: color(white) !default;
 :root {
   --content-bg: #{$content-bg-light}; // 默认使用浅色背景
   --font-color-title:#{$black};
+  --sidebar-bg:#{$content-bg-light};
 }
 
 // 深色模式类名：重新定义 CSS 变量
 .dark-theme {
   --content-bg: #{$content-bg-dark}; // 深色模式切换为深色背景
   --font-color-title:#{$white};
+  --sidebar-bg:#{$content-bg-dark};
+
 }

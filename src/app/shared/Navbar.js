@@ -2,17 +2,16 @@ import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Trans } from 'react-i18next';
-import { useUser } from '../../AppInit'; // 引入获取用户数据的 Hook
+import { useUserInfo } from '../../context/userInfoContext'; // 引入获取用户数据的 Hook
 import { Switch } from 'antd';
-import { useTheme } from '../../hook/useTheme'; // 导入自定义Hook
+import { useTheme } from '../../context/themeContext'; // 导入自定义Hook
 
 // 类组件改写为函数组件
 const Navbar = () => {
   // 从 Context 中获取用户数据
-  const userData = useUser();
+  const userData = useUserInfo();
   const { theme, changeTheme } = useTheme();
   const isDarkMode = theme === 'dark';
-  console.log("isDarkMode", isDarkMode, "theme", theme, "changeTheme", changeTheme)
   // 原类方法转换为函数组件内的普通函数
   const toggleOffcanvas = () => {
     document.querySelector('.sidebar-offcanvas').classList.toggle('active');
@@ -54,7 +53,7 @@ const Navbar = () => {
                 </div>
                 <div className="nav-profile-text">
                   {/* 关键修改：从 Context 中获取用户名，替换硬编码的 David Greymaax */}
-                  <p className="mb-1 text-black">{userData?.realName || 'Loading...'}</p>
+                  <p className="mb-1 text-black">{userData?.userInfo.realName || 'Loading...'}</p>
                 </div>
               </Dropdown.Toggle>
 
